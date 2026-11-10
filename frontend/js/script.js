@@ -29,8 +29,6 @@ const allowedTypes = [
 ];
 
 
-// SELECIONAR IMAGEM
-
 selectButton.addEventListener("click", () => {
     imageInput.click();
 });
@@ -53,8 +51,6 @@ imageInput.addEventListener("change", (event) => {
     }
 });
 
-
-// ARRASTAR E SOLTAR IMAGEM
 
 uploadArea.addEventListener("dragover", (event) => {
 
@@ -81,8 +77,6 @@ uploadArea.addEventListener("drop", (event) => {
     }
 });
 
-
-// VALIDAR E MOSTRAR IMAGEM
 
 function processImage(file) {
 
@@ -122,8 +116,6 @@ function processImage(file) {
 }
 
 
-// REMOVER IMAGEM
-
 removeButton.addEventListener("click", () => {
 
     selectedFile = null;
@@ -146,8 +138,6 @@ removeButton.addEventListener("click", () => {
     resetResults();
 });
 
-
-// REALIZAR CLASSIFICAÇÃO
 
 analyzeButton.addEventListener("click", async () => {
 
@@ -204,7 +194,6 @@ analyzeButton.addEventListener("click", async () => {
 });
 
 
-// APRESENTAR RESULTADOS
 
 function displayResults(data) {
 
@@ -264,7 +253,6 @@ function displayResults(data) {
 }
 
 
-// ESTADOS DA INTERFACE
 
 function showLoading(active) {
 

@@ -2,4 +2,8 @@ Flask
 tensorflow
 numpy
 Pillow
+<<<<<<< HEAD
 gunicorn
+=======
+gunicorn
+>>>>>>> 13e793b (Atualizando o Projeto)

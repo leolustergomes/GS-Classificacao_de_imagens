@@ -9,7 +9,10 @@ import tensorflow as tf
 import json
 import io
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13e793b (Atualizando o Projeto)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 FRONTEND_DIR = BASE_DIR / "frontend"
@@ -119,6 +122,10 @@ def processar_imagem(arquivo):
 
     return imagem
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 13e793b (Atualizando o Projeto)
 @app.route("/api/predict", methods=["POST"])
 def predict():
 
@@ -141,7 +148,10 @@ def predict():
             verbose=0
         )[0]
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13e793b (Atualizando o Projeto)
         indice = int(np.argmax(previsao))
 
         categoria_prevista = CATEGORIAS[indice]
@@ -192,6 +202,10 @@ def predict():
             "error": "Erro interno ao processar a imagem."
         }), 500
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 13e793b (Atualizando o Projeto)
 @app.errorhandler(413)
 def arquivo_muito_grande(erro):
 
@@ -199,6 +213,10 @@ def arquivo_muito_grande(erro):
         "error": "A imagem ultrapassa o limite de 10 MB."
     }), 413
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 13e793b (Atualizando o Projeto)
 if __name__ == "__main__":
 
     app.run(
