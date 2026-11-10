@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Territorial AI - Classificação inteligente de imagens de satélite utilizando inteligência artificial.">
+
+    <title>Territorial AI | Análise Inteligente</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header class="header">
+
+        <a href="/" class="logo">
+            <span class="logo-icon">T</span>
+            <span>Territorial<span class="logo-highlight">AI</span></span>
+        </a>
+
+        <nav class="navigation">
+            <a href="#inicio">Início</a>
+            <a href="#classificacao">Classificação</a>
+            <a href="#sobre">Sobre o projeto</a>
+        </nav>
+
+        <div class="header-status">
+            <span class="status-dot"></span>
+            Sistema de IA
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <!-- APRESENTAÇÃO -->
+
+        <section class="hero" id="inicio">
+
+            <div class="hero-content">
+
+                <span class="eyebrow">
+                    INTELIGÊNCIA ARTIFICIAL APLICADA AO TERRITÓRIO
+                </span>
+
+                <h1>
+                    Inteligência para
+                    <span>compreender</span>
+                    nosso território.
+                </h1>
+
+                <p>
+                    Utilize inteligência artificial para identificar
+                    padrões territoriais em imagens de satélite.
+                    Classifique áreas residenciais, industriais,
+                    florestas e rios de maneira automatizada.
+                </p>
+
+                <a href="#classificacao" class="primary-button">
+                    Começar análise
+                    <span>→</span>
+                </a>
+
+            </div>
+
+            <div class="hero-image">
+
+                <div class="image-overlay">
+                    <span>ANÁLISE GEOESPACIAL</span>
+                    <strong>Satellite Intelligence</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CLASSIFICADOR -->
+
+        <section class="classification-section" id="classificacao">
+
+            <div class="section-heading">
+
+                <span class="eyebrow">ANÁLISE INTELIGENTE</span>
+
+                <h2>Classificação de imagens</h2>
+
+                <p>
+                    Envie uma imagem de satélite para que nossa
+                    inteligência artificial identifique sua
+                    categoria territorial.
+                </p>
+
+            </div>
+
+
+            <div class="analysis-container">
+
+                <div class="upload-card">
+
+                    <div class="card-heading">
+                        <h3>Enviar imagem</h3>
+                        <span class="step-number">01</span>
+                    </div>
+
+                    <input
+                        type="file"
+                        id="imageInput"
+                        accept="image/jpeg,image/png,image/webp"
+                        hidden
+                    >
+
+                    <div class="upload-area" id="uploadArea">
+
+                        <div class="upload-icon">↑</div>
+
+                        <h3>Selecione sua imagem</h3>
+
+                        <p>
+                            Arraste uma imagem até aqui ou clique
+                            para procurar no seu computador.
+                        </p>
+
+                        <button
+                            type="button"
+                            class="secondary-button"
+                            id="selectButton"
+                        >
+                            Escolher imagem
+                        </button>
+
+                        <span class="file-information">
+                            JPG, PNG ou WEBP
+                        </span>
+
+                    </div>
+
+
+                    <div class="preview-container" id="previewContainer">
+
+                        <div class="preview-heading">
+                            <span>Imagem selecionada</span>
+
+                            <button
+                                type="button"
+                                id="removeButton"
+                                class="remove-button"
+                            >
+                                Remover
+                            </button>
+                        </div>
+
+                        <img
+                            id="imagePreview"
+                            src=""
+                            alt="Pré-visualização da imagem"
+                        >
+
+                        <p id="fileName"></p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="primary-button analyze-button"
+                        id="analyzeButton"
+                        disabled
+                    >
+                        Analisar imagem
+                        <span>→</span>
+                    </button>
+
+                    <p class="error-message" id="errorMessage"></p>
+
+                </div>
+
+
+                <!-- RESULTADOS -->
+
+                <div class="results-card">
+
+                    <div class="card-heading">
+
+                        <h3>Resultado da análise</h3>
+
+                        <span class="step-number">02</span>
+
+                    </div>
+
+                    <div class="empty-results" id="emptyResults">
+
+                        <div class="empty-icon">◎</div>
+
+                        <h3>Aguardando análise</h3>
+
+                        <p>
+                            Envie uma imagem para visualizar
+                            os resultados da classificação.
+                        </p>
+
+                    </div>
+
+
+                    <div class="loading" id="loading">
+
+                        <div class="loader"></div>
+
+                        <h3>Processando imagem...</h3>
+
+                        <p>
+                            Nossa inteligência artificial está
+                            analisando os dados territoriais.
+                        </p>
+
+                    </div>
+
+
+                    <div class="result-content" id="resultContent">
+
+                        <span class="result-label">
+                            CATEGORIA IDENTIFICADA
+                        </span>
+
+                        <h2 id="predictedClass">--</h2>
+
+                        <div class="confidence-box">
+
+                            <span>Confiança do modelo</span>
+
+                            <strong id="confidenceValue">0%</strong>
+
+                        </div>
+
+                        <div class="probability-heading">
+                            <h4>Probabilidades por categoria</h4>
+                        </div>
+
+                        <div id="probabilityList"></div>
+
+                        <p class="result-disclaimer">
+                            Os percentuais representam as probabilidades
+                            estimadas pela CNN e não garantem a
+                            classificação correta.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CATEGORIAS -->
+
+        <section class="categories-section" id="sobre">
+
+            <div class="section-heading">
+
+                <span class="eyebrow">NOSSA TECNOLOGIA</span>
+
+                <h2>Quatro categorias territoriais</h2>
+
+                <p>
+                    O modelo foi desenvolvido para reconhecer
+                    quatro tipos de cobertura e ocupação do solo.
+                </p>
+
+            </div>
+
+            <div class="categories-grid">
+
+                <article class="category-card residential">
+                    <span>01</span>
+                    <h3>Residential</h3>
+                    <p>Áreas residenciais e urbanizadas.</p>
+                </article>
+
+                <article class="category-card industrial">
+                    <span>02</span>
+                    <h3>Industrial</h3>
+                    <p>Áreas de ocupação industrial.</p>
+                </article>
+
+                <article class="category-card forest">
+                    <span>03</span>
+                    <h3>Forest</h3>
+                    <p>Áreas de cobertura florestal.</p>
+                </article>
+
+                <article class="category-card river">
+                    <span>04</span>
+                    <h3>River</h3>
+                    <p>Áreas correspondentes a rios.</p>
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
+
+        <a href="/" class="logo">
+            <span class="logo-icon">T</span>
+            <span>Territorial<span class="logo-highlight">AI</span></span>
+        </a>
+
+        <p>
+            Inteligência artificial aplicada à classificação
+            de imagens de satélite.
+        </p>
+
+        <span>© 2026 Territorial AI</span>
+
+    </footer>
+
+
+    <script src="/js/script.js"></script>
+
+</body>
+
+</html>
