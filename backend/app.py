@@ -10,10 +10,6 @@ import json
 import io
 
 
-# ==========================================
-# 1. CAMINHOS DO PROJETO
-# ==========================================
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 FRONTEND_DIR = BASE_DIR / "frontend"
@@ -24,10 +20,6 @@ MODEL_PATH = MODEL_DIR / "melhor_modelo.keras"
 
 CONFIG_PATH = MODEL_DIR / "configuracao.json"
 
-
-# ==========================================
-# 2. CONFIGURAÇÕES DO FLASK
-# ==========================================
 
 app = Flask(
     __name__,
@@ -46,10 +38,6 @@ FORMATOS_PERMITIDOS = {
     "webp"
 }
 
-
-# ==========================================
-# 3. CARREGAR MODELO E CONFIGURAÇÃO
-# ==========================================
 
 if not MODEL_PATH.exists():
     raise FileNotFoundError(
@@ -78,10 +66,6 @@ print("Modelo carregado com sucesso!")
 print("Categorias:", CATEGORIAS)
 
 
-# ==========================================
-# 4. PÁGINA INICIAL
-# ==========================================
-
 @app.route("/")
 def index():
 
@@ -91,9 +75,6 @@ def index():
     )
 
 
-# ==========================================
-# 5. VALIDAR FORMATO DA IMAGEM
-# ==========================================
 
 def validar_imagem(arquivo):
 
@@ -112,10 +93,6 @@ def validar_imagem(arquivo):
     return True
 
 
-# ==========================================
-# 6. PRÉ-PROCESSAMENTO
-# ==========================================
-
 def processar_imagem(arquivo):
 
     imagem = Image.open(
@@ -133,21 +110,14 @@ def processar_imagem(arquivo):
         dtype=np.float32
     )
 
-    # Mesma normalização utilizada no Colab
     imagem = imagem / 255.0
 
-    # Adiciona a dimensão do lote
     imagem = np.expand_dims(
         imagem,
         axis=0
     )
 
     return imagem
-
-
-# ==========================================
-# 7. API DE CLASSIFICAÇÃO
-# ==========================================
 
 @app.route("/api/predict", methods=["POST"])
 def predict():
@@ -166,20 +136,19 @@ def predict():
 
         imagem = processar_imagem(arquivo)
 
-        # Executar a CNN
         previsao = modelo.predict(
             imagem,
             verbose=0
         )[0]
 
-        # Identificar a classe de maior probabilidade
+
         indice = int(np.argmax(previsao))
 
         categoria_prevista = CATEGORIAS[indice]
+        
 
         confianca = float(previsao[indice] * 100)
 
-        # Organizar as probabilidades
         probabilidades = {
 
             categoria: round(
@@ -223,11 +192,6 @@ def predict():
             "error": "Erro interno ao processar a imagem."
         }), 500
 
-
-# ==========================================
-# 8. TRATAMENTO DE ARQUIVOS MUITO GRANDES
-# ==========================================
-
 @app.errorhandler(413)
 def arquivo_muito_grande(erro):
 
@@ -235,15 +199,10 @@ def arquivo_muito_grande(erro):
         "error": "A imagem ultrapassa o limite de 10 MB."
     }), 413
 
-
-# ==========================================
-# 9. EXECUTAR SERVIDOR
-# ==========================================
-
 if __name__ == "__main__":
 
     app.run(
-        host="127.0.0.1",
+        host="0.0.0.0",
         port=5000,
-        debug=True
+        debug=False
     )
