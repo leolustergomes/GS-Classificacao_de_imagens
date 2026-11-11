@@ -144,37 +144,29 @@ O desafio solicita a avaliação de pelo menos três configurações diferentes 
 
 | Experimento | Principais alterações na arquitetura/hiperparâmetros | Resultado observado |
 |---|---|---|
-| CNN 1 — Inicial | [descrever a arquitetura inicial] | [inserir métricas] |
-| CNN 2 — Experimento | [descrever o que foi alterado e por quê] | [inserir métricas] |
-| CNN 3 — Experimento | [descrever o que foi alterado e por quê] | [inserir métricas] |
-| Modelo selecionado | [explicar por que foi escolhido com base na validação] | [inserir métricas finais] |
+| CNN 1 — Inicial | [Duas Conv2D (32 e 64 filtros), duas MaxPooling e Dense de 128 neurônios.] | [84,17%] |
+| CNN 2 — Experimento | [Cinco Conv2D (32, 32, 64, 64 e 128 filtros), três MaxPooling e Dense de 128 neurônios.] | [89,17%] |
+| CNN 3 — Experimento | [Três Conv2D, Batch Normalization, Global Average Pooling e Dropout de 40%.] | [35,83%] |
+| Modelo selecionado | [CNN 2 : Modelo com a melhor acurácia ] | [89,17%] |
 
 A seleção do modelo final deve ser justificada pelos resultados de validação. As métricas do conjunto de teste devem ser informadas separadamente, como avaliação final do modelo selecionado.
 
 ## Resultados dos experimentos
 
-Inclua nesta seção os valores reais obtidos no notebook. Não substitua resultados ausentes por estimativas.
+Melhor modelo:
 
-| Métrica | Resultado do melhor modelo |
-|---|---:|
-| Acurácia | [preencher] |
-| Precisão | [preencher] |
-| Recall | [preencher] |
-| F1-score | [preencher] |
+4/4 ━━━━━━━━━━━━━━━━━━━━ 2s 353ms/step
+              precision    recall  f1-score   support
 
-**Materiais visuais recomendados para esta seção:**
+ Residential     0.6410    0.8333    0.7246        30
+  Industrial     0.8000    0.5333    0.6400        30
+      Forest     0.9355    0.9667    0.9508        30
+       River     0.9333    0.9333    0.9333        30
 
-- Curvas de acurácia de treinamento e validação.
-- Curvas de loss de treinamento e validação.
-- Matriz de confusão do modelo selecionado.
+    accuracy                         0.8167       120
+   macro avg     0.8275    0.8167    0.8122       120
+weighted avg     0.8275    0.8167    0.8122       120
 
-Para adicionar imagens ao README, crie uma pasta `docs/images/` e salve nela os gráficos exportados do notebook. Depois, substitua os exemplos abaixo pelos nomes reais dos arquivos:
-
-```markdown
-![Curvas de acurácia](docs/images/curva_acuracia.png)
-![Curvas de loss](docs/images/curva_loss.png)
-![Matriz de confusão](docs/images/matriz_confusao.png)
-```
 
 ## Requisitos
 
