@@ -58,8 +58,8 @@ Para este projeto, foram consideradas quatro categorias: `Residential`, `Industr
 - Tipo de imagem utilizado: RGB.
 - Dimensão de entrada do modelo: 64 × 64 pixels.
 - Número de categorias do projeto: 4.
-- Quantidade de imagens efetivamente utilizada por categoria: **[preencher de acordo com o notebook]**.
-- Proporção dos conjuntos de treinamento, validação e teste: **[preencher de acordo com o notebook]**.
+- Quantidade de imagens utilizada: **800 imagens (200 por categoria)**.
+- Divisão dos dados: **70% treinamento (560 imagens), 15% validação (120 imagens) e 15% teste (120 imagens)**.
 
 O pré-processamento utilizado na aplicação converte a imagem para RGB, redimensiona para 64 × 64 pixels e normaliza os valores dos pixels para o intervalo de 0 a 1, dividindo-os por 255.
 
@@ -138,25 +138,60 @@ O projeto utiliza uma Rede Neural Convolucional (CNN) desenvolvida para classifi
 
 A camada de saída foi configurada para representar as quatro categorias do projeto.
 
-### Configurações avaliadas
+### Experimentos com as arquiteturas CNN
 
-O desafio solicita a avaliação de pelo menos três configurações diferentes de CNN. Preencha a tabela abaixo com os experimentos que realmente constam no notebook:
+Foram desenvolvidas e avaliadas três configurações de Rede Neural Convolucional, mantendo os mesmos conjuntos de treinamento, validação e teste.
 
+<<<<<<< HEAD
 | Experimento | Principais alterações na arquitetura/hiperparâmetros | Resultado observado |
 |---|---|---|
 | CNN 1 — Inicial | [Duas Conv2D (32 e 64 filtros), duas MaxPooling e Dense de 128 neurônios.] | [84,17%] |
 | CNN 2 — Experimento | [Cinco Conv2D (32, 32, 64, 64 e 128 filtros), três MaxPooling e Dense de 128 neurônios.] | [89,17%] |
 | CNN 3 — Experimento | [Três Conv2D, Batch Normalization, Global Average Pooling e Dropout de 40%.] | [35,83%] |
 | Modelo selecionado | [CNN 2 : Modelo com a melhor acurácia ] | [89,17%] |
+=======
+- **CNN 1 — Arquitetura inicial:** utiliza duas camadas `Conv2D`, com 32 e 64 filtros, cada uma seguida por `MaxPooling2D`. Depois, aplica `Flatten`, uma camada `Dense` com 128 neurônios e a saída `Softmax` com quatro classes. Foi utilizada como modelo de referência para o primeiro experimento.
+- **CNN 2 — Arquitetura intermediária:** amplia a extração de características para cinco camadas `Conv2D`, com 32, 32, 64, 64 e 128 filtros, distribuídas em três etapas de `MaxPooling2D`. Mantém `Flatten`, `Dense` com 128 neurônios e saída com quatro classes. Foi a arquitetura com melhor acurácia de validação e foi selecionada para a aplicação.
+- **CNN 3 — Arquitetura com regularização:** utiliza três camadas `Conv2D` com 32, 64 e 128 filtros, cada uma seguida por `BatchNormalization`, ativação ReLU e `MaxPooling2D`. Substitui `Flatten` por `GlobalAveragePooling2D` e inclui `Dropout` de 40% antes da camada de saída. Apesar de reduzir bastante o número de parâmetros, apresentou desempenho inferior na validação.
 
-A seleção do modelo final deve ser justificada pelos resultados de validação. As métricas do conjunto de teste devem ser informadas separadamente, como avaliação final do modelo selecionado.
+As três arquiteturas utilizaram filtros convolucionais de 3 × 3, ativação ReLU nas camadas intermediárias e uma camada de saída `Softmax` com quatro neurônios. O treinamento foi configurado com otimizador Adam, taxa de aprendizado inicial de 0,001, função de perda `sparse_categorical_crossentropy`, lote de 32 imagens e até 30 épocas. Também foram utilizados `EarlyStopping`, `ReduceLROnPlateau` e `ModelCheckpoint`.
 
-## Resultados dos experimentos
+| Experimento | Parâmetros totais | Melhor acurácia na validação |
+|---|---:|---:|
+| CNN 1 — Inicial | 2.117.188 | 84,17% |
+| CNN 2 — Intermediária | 1.188.644 | **89,17%** |
+| CNN 3 — Regularização | 111.172 | 35,83% |
 
+<<<<<<< HEAD
 Melhor modelo:
 
 4/4 ━━━━━━━━━━━━━━━━━━━━ 2s 353ms/step
               precision    recall  f1-score   support
+=======
+A CNN 2 foi selecionada por apresentar a maior acurácia no conjunto de validação. Essa escolha foi feita antes da avaliação final no conjunto de teste.
+
+## Resultados do modelo selecionado
+
+A avaliação final da CNN 2 no conjunto de teste, composto por 120 imagens, apresentou os seguintes resultados:
+
+| Métrica | Resultado |
+|---|---:|
+| Acurácia | 81,67% |
+| Precisão macro | 82,75% |
+| Recall macro | 81,67% |
+| F1-score macro | 81,22% |
+| Loss | 0,5818 |
+
+### Desempenho por categoria
+
+| Categoria | Precisão | Recall | F1-score |
+|---|---:|---:|---:|
+| Residential | 64,10% | 83,33% | 72,46% |
+| Industrial | 80,00% | 53,33% | 64,00% |
+| Forest | 93,55% | 96,67% | 95,08% |
+| River | 93,33% | 93,33% | 93,33% |
+
+Os resultados mostram melhor desempenho nas classes `Forest` e `River`. A classe `Industrial` apresentou o menor recall, indicando que parte das imagens industriais não foi identificada corretamente. Esse ponto representa uma oportunidade de melhoria para experimentos futuros.
 
  Residential     0.6410    0.8333    0.7246        30
   Industrial     0.8000    0.5333    0.6400        30
@@ -185,7 +220,7 @@ O Visual Studio Code é recomendado, mas não é obrigatório. A versão exata d
 Abra o PowerShell ou o terminal do Visual Studio Code e execute:
 
 ```powershell
-git clone https://github.com/leolustergomes/GS-Classificacao_de_imagens
+git clone https://github.com/leolustergomes/GS-Classificacao_de_imagens/tree/main
 cd NOME_DA_PASTA_DO_REPOSITORIO
 ```
 
@@ -300,8 +335,6 @@ Ferramentas de IA generativa foram utilizadas como apoio ao desenvolvimento. As 
 - Apoio na identificação e correção de erros.
 - Auxílio na interpretação de métricas e na organização da documentação.
 
-As decisões finais sobre arquitetura, experimentos, métricas e funcionamento da aplicação devem ser compreendidas e justificadas pelos integrantes. **Edite esta seção para registrar apenas os usos que realmente ocorreram no desenvolvimento.**
-
 ## Créditos e referências
 
 - **EuroSAT:** [repositório oficial do conjunto de dados](https://github.com/phelber/EuroSAT).
@@ -312,7 +345,8 @@ As decisões finais sobre arquitetura, experimentos, métricas e funcionamento d
 
 ## Informações da equipe
 
-- **Instituição:** [Fiap]
+- **Instituição:** [FIAP]
 - **Curso:** Ciência da Computação
 - **Disciplina:** Aprendizado Profundo com Redes Neurais Convolucionais
-- **Integrantes:** [Leonardo Luster, Sofia Bill e Ana Luiza]
+- **Integrantes:** [Leonardo Luster, Ana Luiza e Sofia Bill]
+
