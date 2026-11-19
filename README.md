@@ -113,7 +113,7 @@ Frontend (classe prevista e probabilidades)
 ## Estrutura do projeto
 
 ```text
-PROJETO_GS/
+GS-Classificacao_de_imagens/
 ├── frontend/
 │   ├── index.html
 │   ├── css/
