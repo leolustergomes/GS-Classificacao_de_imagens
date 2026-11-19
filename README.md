@@ -142,14 +142,6 @@ A camada de saída foi configurada para representar as quatro categorias do proj
 
 Foram desenvolvidas e avaliadas três configurações de Rede Neural Convolucional, mantendo os mesmos conjuntos de treinamento, validação e teste.
 
-<<<<<<< HEAD
-| Experimento | Principais alterações na arquitetura/hiperparâmetros | Resultado observado |
-|---|---|---|
-| CNN 1 — Inicial | [Duas Conv2D (32 e 64 filtros), duas MaxPooling e Dense de 128 neurônios.] | [84,17%] |
-| CNN 2 — Experimento | [Cinco Conv2D (32, 32, 64, 64 e 128 filtros), três MaxPooling e Dense de 128 neurônios.] | [89,17%] |
-| CNN 3 — Experimento | [Três Conv2D, Batch Normalization, Global Average Pooling e Dropout de 40%.] | [35,83%] |
-| Modelo selecionado | [CNN 2 : Modelo com a melhor acurácia ] | [89,17%] |
-=======
 - **CNN 1 — Arquitetura inicial:** utiliza duas camadas `Conv2D`, com 32 e 64 filtros, cada uma seguida por `MaxPooling2D`. Depois, aplica `Flatten`, uma camada `Dense` com 128 neurônios e a saída `Softmax` com quatro classes. Foi utilizada como modelo de referência para o primeiro experimento.
 - **CNN 2 — Arquitetura intermediária:** amplia a extração de características para cinco camadas `Conv2D`, com 32, 32, 64, 64 e 128 filtros, distribuídas em três etapas de `MaxPooling2D`. Mantém `Flatten`, `Dense` com 128 neurônios e saída com quatro classes. Foi a arquitetura com melhor acurácia de validação e foi selecionada para a aplicação.
 - **CNN 3 — Arquitetura com regularização:** utiliza três camadas `Conv2D` com 32, 64 e 128 filtros, cada uma seguida por `BatchNormalization`, ativação ReLU e `MaxPooling2D`. Substitui `Flatten` por `GlobalAveragePooling2D` e inclui `Dropout` de 40% antes da camada de saída. Apesar de reduzir bastante o número de parâmetros, apresentou desempenho inferior na validação.
@@ -162,12 +154,6 @@ As três arquiteturas utilizaram filtros convolucionais de 3 × 3, ativação Re
 | CNN 2 — Intermediária | 1.188.644 | **89,17%** |
 | CNN 3 — Regularização | 111.172 | 35,83% |
 
-<<<<<<< HEAD
-Melhor modelo:
-
-4/4 ━━━━━━━━━━━━━━━━━━━━ 2s 353ms/step
-              precision    recall  f1-score   support
-=======
 A CNN 2 foi selecionada por apresentar a maior acurácia no conjunto de validação. Essa escolha foi feita antes da avaliação final no conjunto de teste.
 
 ## Resultados do modelo selecionado
@@ -193,16 +179,6 @@ A avaliação final da CNN 2 no conjunto de teste, composto por 120 imagens, apr
 
 Os resultados mostram melhor desempenho nas classes `Forest` e `River`. A classe `Industrial` apresentou o menor recall, indicando que parte das imagens industriais não foi identificada corretamente. Esse ponto representa uma oportunidade de melhoria para experimentos futuros.
 
- Residential     0.6410    0.8333    0.7246        30
-  Industrial     0.8000    0.5333    0.6400        30
-      Forest     0.9355    0.9667    0.9508        30
-       River     0.9333    0.9333    0.9333        30
-
-    accuracy                         0.8167       120
-   macro avg     0.8275    0.8167    0.8122       120
-weighted avg     0.8275    0.8167    0.8122       120
-
-
 ## Requisitos
 
 Antes de executar o projeto, instale:
@@ -220,11 +196,9 @@ O Visual Studio Code é recomendado, mas não é obrigatório. A versão exata d
 Abra o PowerShell ou o terminal do Visual Studio Code e execute:
 
 ```powershell
-git clone https://github.com/leolustergomes/GS-Classificacao_de_imagens/tree/main
-cd NOME_DA_PASTA_DO_REPOSITORIO
+git clone https://github.com/leolustergomes/GS-Classificacao_de_imagens.git
+cd GS-Classificacao_de_imagens
 ```
-
-Substitua `NOME_DA_PASTA_DO_REPOSITORIO` pelo nome da pasta criada pelo Git.
 
 Também é possível baixar o projeto pelo botão **Code → Download ZIP** do GitHub. Nesse caso, extraia o arquivo ZIP e abra a pasta extraída no terminal.
 
@@ -328,12 +302,14 @@ Formatos de imagem aceitos pela aplicação: JPG, JPEG, PNG e WEBP. O limite de 
 
 ## Uso de inteligência artificial generativa
 
-Ferramentas de IA generativa foram utilizadas como apoio ao desenvolvimento. As contribuições efetivamente utilizadas devem ser descritas e validadas pela equipe, por exemplo:
+Ferramentas de IA generativa foram utilizadas como apoio ao desenvolvimento do projeto. As principais contribuições foram:
 
 - Apoio na compreensão de conceitos de CNN e aprendizado profundo.
 - Sugestões e revisão de trechos de código.
 - Apoio na identificação e correção de erros.
 - Auxílio na interpretação de métricas e na organização da documentação.
+
+Todo o conteúdo gerado com apoio de IA foi revisado, testado e validado pela equipe, que é responsável pelas decisões técnicas e pelos resultados apresentados.
 
 ## Créditos e referências
 
@@ -345,8 +321,7 @@ Ferramentas de IA generativa foram utilizadas como apoio ao desenvolvimento. As 
 
 ## Informações da equipe
 
-- **Instituição:** [FIAP]
+- **Instituição:** FIAP
 - **Curso:** Ciência da Computação
 - **Disciplina:** Aprendizado Profundo com Redes Neurais Convolucionais
-- **Integrantes:** [Leonardo Luster, Ana Luiza e Sofia Bill]
-
+- **Integrantes:** Leonardo Luster, Ana Luiza e Sofia Bill
