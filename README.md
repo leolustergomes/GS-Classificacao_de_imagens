@@ -113,7 +113,7 @@ Frontend (classe prevista e probabilidades)
 ## Estrutura do projeto
 
 ```text
-GS-Classificacao_de_imagens/
+PROJETO_GS/
 ├── frontend/
 │   ├── index.html
 │   ├── css/
@@ -140,44 +140,46 @@ A camada de saída foi configurada para representar as quatro categorias do proj
 
 ### Experimentos com as arquiteturas CNN
 
-Foram desenvolvidas e avaliadas três configurações de Rede Neural Convolucional, mantendo os mesmos conjuntos de treinamento, validação e teste.
+Foram desenvolvidas e avaliadas quatro configurações de Rede Neural Convolucional, mantendo os mesmos conjuntos de treinamento, validação e teste.
 
 - **CNN 1 — Arquitetura inicial:** utiliza duas camadas `Conv2D`, com 32 e 64 filtros, cada uma seguida por `MaxPooling2D`. Depois, aplica `Flatten`, uma camada `Dense` com 128 neurônios e a saída `Softmax` com quatro classes. Foi utilizada como modelo de referência para o primeiro experimento.
-- **CNN 2 — Arquitetura intermediária:** amplia a extração de características para cinco camadas `Conv2D`, com 32, 32, 64, 64 e 128 filtros, distribuídas em três etapas de `MaxPooling2D`. Mantém `Flatten`, `Dense` com 128 neurônios e saída com quatro classes. Foi a arquitetura com melhor acurácia de validação e foi selecionada para a aplicação.
-- **CNN 3 — Arquitetura com regularização:** utiliza três camadas `Conv2D` com 32, 64 e 128 filtros, cada uma seguida por `BatchNormalization`, ativação ReLU e `MaxPooling2D`. Substitui `Flatten` por `GlobalAveragePooling2D` e inclui `Dropout` de 40% antes da camada de saída. Apesar de reduzir bastante o número de parâmetros, apresentou desempenho inferior na validação.
+- **CNN 2 — Arquitetura intermediária:** amplia a extração de características para cinco camadas `Conv2D`, com 32, 32, 64, 64 e 128 filtros, distribuídas em três etapas de `MaxPooling2D`. Mantém `Flatten`, `Dense` com 128 neurônios e saída com quatro classes. Superou a CNN 1 na validação.
+- **CNN 3 — Arquitetura com regularização:** utiliza três camadas `Conv2D` com 32, 64 e 128 filtros, cada uma seguida por `BatchNormalization`, ativação ReLU e `MaxPooling2D`. Substitui `Flatten` por `GlobalAveragePooling2D` e inclui `Dropout` de 40% antes da camada de saída. Neste experimento, apresentou baixa acurácia de validação e grande divergência em relação ao treinamento.
+- **CNN 3b — Ajuste do BatchNormalization:** mantém a arquitetura da CNN 3 e altera somente o parâmetro `momentum` das camadas `BatchNormalization` para `0.9`. Esse teste controlado investigou se o ajuste das médias móveis do BatchNormalization melhoraria a validação. A CNN 3b obteve o melhor resultado entre as quatro configurações.
 
-As três arquiteturas utilizaram filtros convolucionais de 3 × 3, ativação ReLU nas camadas intermediárias e uma camada de saída `Softmax` com quatro neurônios. O treinamento foi configurado com otimizador Adam, taxa de aprendizado inicial de 0,001, função de perda `sparse_categorical_crossentropy`, lote de 32 imagens e até 30 épocas. Também foram utilizados `EarlyStopping`, `ReduceLROnPlateau` e `ModelCheckpoint`.
+As quatro arquiteturas utilizaram filtros convolucionais de 3 × 3, ativação ReLU nas camadas intermediárias e uma camada de saída `Softmax` com quatro neurônios. O treinamento foi configurado com otimizador Adam, taxa de aprendizado inicial de 0,001, função de perda `sparse_categorical_crossentropy`, lote de 32 imagens e até 30 épocas. Também foram utilizados `EarlyStopping`, `ReduceLROnPlateau` e `ModelCheckpoint`.
 
 | Experimento | Parâmetros totais | Melhor acurácia na validação |
 |---|---:|---:|
 | CNN 1 — Inicial | 2.117.188 | 84,17% |
-| CNN 2 — Intermediária | 1.188.644 | **89,17%** |
+| CNN 2 — Intermediária | 1.188.644 | 89,17% |
 | CNN 3 — Regularização | 111.172 | 35,83% |
+| CNN 3b — BatchNormalization (`momentum=0.9`) | 111.172 | **92,50%** |
 
-A CNN 2 foi selecionada por apresentar a maior acurácia no conjunto de validação. Essa escolha foi feita antes da avaliação final no conjunto de teste.
+A **CNN 3b** foi selecionada por apresentar a maior acurácia no conjunto de validação (92,50%), acima da CNN 2 (89,17%). A alteração entre CNN 3 e CNN 3b foi isolada no `momentum` do BatchNormalization; portanto, o resultado indica uma melhora neste experimento, mas não prova sozinho que esse parâmetro foi a única causa da diferença. A seleção foi feita com os dados de validação, antes da avaliação final no conjunto de teste.
 
 ## Resultados do modelo selecionado
 
-A avaliação final da CNN 2 no conjunto de teste, composto por 120 imagens, apresentou os seguintes resultados:
+A avaliação final da CNN 3b no conjunto de teste, composto por 120 imagens, apresentou os seguintes resultados:
 
 | Métrica | Resultado |
 |---|---:|
-| Acurácia | 81,67% |
-| Precisão macro | 82,75% |
-| Recall macro | 81,67% |
-| F1-score macro | 81,22% |
-| Loss | 0,5818 |
+| Acurácia | **94,17%** |
+| Precisão macro | 94,56% |
+| Recall macro | 94,17% |
+| F1-score macro | 94,14% |
+| Loss | 0,1593 |
 
 ### Desempenho por categoria
 
 | Categoria | Precisão | Recall | F1-score |
 |---|---:|---:|---:|
-| Residential | 64,10% | 83,33% | 72,46% |
-| Industrial | 80,00% | 53,33% | 64,00% |
-| Forest | 93,55% | 96,67% | 95,08% |
-| River | 93,33% | 93,33% | 93,33% |
+| Residential | 96,77% | 100,00% | 98,36% |
+| Industrial | 100,00% | 96,67% | 98,31% |
+| Forest | 96,15% | 83,33% | 89,29% |
+| River | 85,29% | 96,67% | 90,62% |
 
-Os resultados mostram melhor desempenho nas classes `Forest` e `River`. A classe `Industrial` apresentou o menor recall, indicando que parte das imagens industriais não foi identificada corretamente. Esse ponto representa uma oportunidade de melhoria para experimentos futuros.
+A CNN 3b apresentou resultados equilibrados, com F1-score acima de 98% em `Residential` e `Industrial`. A principal dificuldade ficou na separação entre `Forest` e `River`: cinco imagens de `Forest` foram classificadas como `River`, e uma imagem de `River` foi classificada como `Forest`. Esses erros indicam uma oportunidade de melhoria na distinção de padrões visuais dessas duas classes.
 
 ## Requisitos
 
@@ -270,6 +272,10 @@ Para encerrar a aplicação, volte ao terminal e pressione `Ctrl + C`.
 
 > **Observação:** o servidor local precisa permanecer em execução enquanto a aplicação estiver sendo utilizada. O endereço `127.0.0.1` é local ao computador em que o servidor foi iniciado; ele não disponibiliza o site publicamente na internet.
 
+## Alternativa: executar pelo notebook (Gradio)
+
+A aplicação também pode ser executada direto no Google Colab. Basta abrir o notebook `Global_Solution_Classificacao_Imagens_ATUALIZADO.ipynb`, fazer o upload do `EuroSAT_RGB.zip` em `/content` e executar todas as células. A última célula de código inicia uma interface Gradio com `share=True`, que gera um endereço público temporário. Para obter um novo endereço, basta executar o notebook novamente.
+
 ## Como utilizar a aplicação
 
 1. Abra o endereço `http://127.0.0.1:5000` no navegador.
@@ -302,14 +308,14 @@ Formatos de imagem aceitos pela aplicação: JPG, JPEG, PNG e WEBP. O limite de 
 
 ## Uso de inteligência artificial generativa
 
-Ferramentas de IA generativa foram utilizadas como apoio ao desenvolvimento do projeto. As principais contribuições foram:
+Ferramentas de IA generativa foram usadas como apoio em todas as etapas. As principais contribuições e a forma como a equipe as avaliou:
 
-- Apoio na compreensão de conceitos de CNN e aprendizado profundo.
-- Sugestões e revisão de trechos de código.
-- Apoio na identificação e correção de erros.
-- Auxílio na interpretação de métricas e na organização da documentação.
+- **Diagnóstico da CNN 3:** a IA levantou a hipótese de que a validação travada em 25% estava ligada às médias móveis do `BatchNormalization`, já que há apenas 18 passos por época. A equipe não aceitou a hipótese diretamente: criou a CNN 3b, alterando somente o `momentum`, para testá-la em um experimento controlado. O resultado (35,83% → 92,50% na validação) foi registrado com a ressalva de que não prova causalidade isolada.
+- **Callbacks de treinamento:** a IA sugeriu `EarlyStopping`, `ReduceLROnPlateau` e `ModelCheckpoint`. A equipe manteve os três e conferiu nos logs que o melhor modelo de cada arquitetura foi restaurado pela acurácia de validação.
+- **Código e revisão:** apoio na implementação do pré-processamento, das arquiteturas, das métricas e da aplicação web (Flask e Gradio). A equipe executou todo o notebook e testou a aplicação com novas imagens.
+- **Documentação:** apoio na organização deste README e dos slides. Os números apresentados foram conferidos com as saídas do notebook.
 
-Todo o conteúdo gerado com apoio de IA foi revisado, testado e validado pela equipe, que é responsável pelas decisões técnicas e pelos resultados apresentados.
+A seleção do modelo, a interpretação dos resultados e as decisões técnicas finais foram feitas pela equipe.
 
 ## Créditos e referências
 

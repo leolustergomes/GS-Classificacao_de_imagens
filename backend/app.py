@@ -61,8 +61,15 @@ IMG_SIZE = configuracao["tamanho_imagem"]
 
 modelo = tf.keras.models.load_model(MODEL_PATH)
 
-print("Modelo carregado com sucesso!")
+MELHOR_ARQUITETURA = configuracao.get("melhor_arquitetura", "não informada")
 
+if modelo.output_shape[-1] != len(CATEGORIAS):
+    raise ValueError(
+        "A saída do modelo não corresponde à quantidade de categorias configuradas."
+    )
+
+print("Modelo carregado com sucesso!")
+print("Arquitetura selecionada:", MELHOR_ARQUITETURA)
 print("Categorias:", CATEGORIAS)
 
 
